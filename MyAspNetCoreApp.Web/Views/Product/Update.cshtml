@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Update";
+}
+@model Product
+
+<h1>Ürün Güncelleme</h1>
+<form asp-controller="Product" asp-action="Update" method="post">
+    <label>Ürün İsmi :</label>
+    <input type="hidden" asp-for="Id" /> @*kullanıcı id görmez ama arka planda id yi de product'a gönderir.*@
+    <input type="text" asp-for="Name" />
+    <br />
+    <label>Ürün Fiyat :</label>
+    <input type="text" asp-for="Price" />
+    <br />
+    <label>Ürün Stok :</label>
+    <input type="text" asp-for="Stock" />
+    <br />
+    <label>Ürün Renk :</label>
+    <input type="text" asp-for="Color" />
+    <br />
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>

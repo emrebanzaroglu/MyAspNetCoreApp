@@ -1,7 +1,48 @@
-﻿
+﻿@using MyAspNetCoreApp.Web.Controllers
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Ornek Controller, Index Sayfası</h1>
 
+@{
+    var name = ViewBag.name;
+    <p>@name</p>
+}
+
+<p>@name</p>
+
+<p>@ViewBag.name</p>
+<hr />
+<p>Yaş : @ViewData["age"]</p>
+@foreach (var item in ViewData["names"] as List<string>) //as keyword'ü ViewData["names"] dinamik tipini List<string> tipine dönüştürür.
+{
+    <p>@item</p>
+}
+
+<p>@ViewBag.person.Id - @ViewBag.person.Name - @ViewBag.person.Age</p>
+
+@model List<Products>; //küçük m ile tipini belirtiriz. Büyük M ile de datayı alırız.
+@foreach (var item in Model)
+{
+    <p>@item.Id - @item.Name</p>
+}
+
+<span>@DateTime.Now.ToShortDateString()</span>
+@{
+    var datetime = DateTime.Now.ToShortDateString();
+    <p>@datetime</p>
+}
+<p>Bugünün tarihi : @datetime</p>
+
+<partial name="_MenuPartialView" />
+
+@section Scripts{
+    <script type="text/javascript">
+        alert("Sayfamıza Hoşgeldin")
+
+        $(document).ready(function(){ //sayfa tamamen yüklendikten sonra bu koda eriş demek
+            console.log("Sayfamıza Hoşgeldin")
+        })
+    </script>
+}
