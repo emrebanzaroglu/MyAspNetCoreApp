@@ -22,11 +22,6 @@
 
 <p>@ViewBag.person.Id - @ViewBag.person.Name - @ViewBag.person.Age</p>
 
-@model List<Products>; //küçük m ile tipini belirtiriz. Büyük M ile de datayı alırız.
-@foreach (var item in Model)
-{
-    <p>@item.Id - @item.Name</p>
-}
 
 <span>@DateTime.Now.ToShortDateString()</span>
 @{

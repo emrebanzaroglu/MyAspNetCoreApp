@@ -2,11 +2,6 @@
 
 namespace   MyAspNetCoreApp.Web.Controllers
 {
-    public class Products
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
     public class OrnekController : Controller
     {
         public IActionResult Index()
@@ -17,13 +12,7 @@ namespace   MyAspNetCoreApp.Web.Controllers
             ViewBag.person = new { Id = 1, Name = "Emre", Age = 25 };
             TempData["surname"] = "banzar"; //başka viewlere veri taşıyabilir.
 
-            var productList = new List<Products>()
-            {
-                new () { Id = 1,Name="Kalem"}, //tip belli olduğu için new Products() demeye gerek yok.
-                new () { Id = 2,Name="Defter"},
-                new () { Id = 3,Name="Cetvel"}
-            };
-            return View(productList);
+            return View();
         }
         public IActionResult Index2()
         {
