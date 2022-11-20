@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyAspNetCoreApp.Web.ViewModels
 {
@@ -6,11 +7,11 @@ namespace MyAspNetCoreApp.Web.ViewModels
     {
         public int Id { get; set; }
 
+        [Remote(action:"HasProductName",controller:"Product")]
         [Required(ErrorMessage = "Lütfen bu alanı doldurunuz!")]
         [StringLength(50, ErrorMessage = "İsim alanına en fazla 50 karakter girilebilir!")]
         public string? Name { get; set; }
 
-        [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})", ErrorMessage = "Fiyat alanında noktadan sonra en fazla 2 basamak olmalıdır!")]
         [Required(ErrorMessage = "Lütfen bu alanı doldurunuz!")]
         [Range(1, 1000, ErrorMessage = "Fiyat alanı 1 ile 1000 arasında değer olmalıdır!")]
         public decimal? Price { get; set; }
@@ -32,8 +33,5 @@ namespace MyAspNetCoreApp.Web.ViewModels
 
         [Required(ErrorMessage = "Lütfen bir süre seçiniz!")]
         public int? Expire { get; set; }
-
-        [EmailAddress(ErrorMessage ="Email adresi uygun formatta değil!")]
-        public string EmailAddress { get; set; }
     }
 }
