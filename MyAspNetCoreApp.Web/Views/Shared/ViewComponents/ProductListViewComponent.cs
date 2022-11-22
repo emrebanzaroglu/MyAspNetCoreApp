@@ -13,14 +13,23 @@ namespace MyAspNetCoreApp.Web.Views.Shared.ViewComponents
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(int type=1)
         {
             var viewmodels = _context.Product.Select(x => new ProductListComponentViewModel()
             {
                 Name = x.Name,
                 Description = x.Description
             }).ToList();
-            return View(viewmodels); //herhangi bir cshtml belirtmezsek components folder'ındaki iligli folderda cshtml dosyası arayacak ve oraya atacak.
+            if (type==1)
+            {
+                return View("Default",viewmodels);
+                //return View(viewmodels); //herhangi bir cshtml belirtmezsek components folder'ındaki ilgili folderda cshtml dosyası arayacak ve oraya atacak.
+            }
+            else
+            {
+                return View("Type2", viewmodels);
+            }
+            
         }
     }
 }

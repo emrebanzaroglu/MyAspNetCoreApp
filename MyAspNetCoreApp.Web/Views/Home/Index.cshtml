@@ -8,6 +8,9 @@
     </div>
 
     <div class="col-md-4">
-        @await Component.InvokeAsync("ProductList")
+        @*1. yol*@
+        @*@await Component.InvokeAsync("ProductList",new {type=1})*@
+        @*2. yol kullanışlı olan*@ 
+        <vc:product-list type=1></vc:product-list>
     </div>
 </div>

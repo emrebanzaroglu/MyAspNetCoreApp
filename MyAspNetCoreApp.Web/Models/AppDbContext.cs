@@ -9,5 +9,6 @@ namespace MyAspNetCoreApp.Web.Models
 
         }
         public DbSet<Product> Product { get; set; } //burada belirttiğim isim ile databasedeki isim aynı olmalı
+        public DbSet<Visitors> Visitors { get; set; } //burada belirttiğim isim ile databasedeki isim aynı olmalı
     }
 }
