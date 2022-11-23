@@ -10,6 +10,7 @@ namespace MyAspNetCoreApp.Web.Mapping
         {
             CreateMap<Product,ProductViewModel>().ReverseMap();  //product entity'sini ProductViewModel'e mapler. 
                                                                  //reversemap ile tam terisini de yapabilir.
+            CreateMap<Visitors, VisitorViewModel>().ReverseMap();
         }
     }
 }
