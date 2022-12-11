@@ -24,6 +24,23 @@ namespace MyAspNetCoreApp.Web.Controllers
             return View(_mapper.Map<List<ProductViewModel>>(product));
         }
 
+        public IActionResult Pages(int page,int pageSize)
+        {
+
+            //page=1 pagesize=3 => ilk 3 kayıt
+            //page=2 pagesize=3 => ikinci 3 kayıt
+            var products = _context.Product.Skip((page-1)*pageSize).Take(pageSize).ToList(); //skip metodu atlama işlemi yapar. page'den 1 çıkartıp pagesize ile çarpıp o kadar datayı atlar. Take fonksiyonu içine kaç yazılırsa skip fonksiyonunda atalaycağı kadarını atlar ve içerisindeki kadar alır.
+
+            ViewBag.page = page;
+            ViewBag.pageSize = pageSize;
+
+            return View(_mapper.Map<List<ProductViewModel>>(products));
+        }
+        public IActionResult GetById(int productid) //program.cs 'de route metodunda id kullanıldığı için id yazmamız gerekiyor
+        {
+            var products = _context.Product.Find(productid);
+            return View(_mapper.Map<ProductViewModel>(products)); //products'ı ProductViewModel'e çevir
+        }
 
         [HttpGet]
         public IActionResult Add()

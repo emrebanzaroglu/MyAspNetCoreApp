@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "GetById";
+}
+@model ProductViewModel
+
+<a asp-controller="product" asp-action="index" class="btn btn-outline-secondary mb-2">Ürünler sayfasına git</a>
+<div class="card">
+    <div class="card-header">
+        Ürün (@Model.Name)
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <div>Id : @Model.Id</div>
+            <div>Açıklama : @Model.Description</div>
+            <div>Fiyat : @Model.Price</div>
+            <div>Stok : @Model.Stock</div>
+            <div>Renk : @Model.Color</div>
+            <div>Süre : @Model.Expire</div>
+        </p>
+    </div>
+</div>
