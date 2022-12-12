@@ -7,6 +7,7 @@ using MyAspNetCoreApp.Web.ViewModels;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
+    
     public class ProductController : Controller
     {
         private AppDbContext _context;
@@ -24,6 +25,8 @@ namespace MyAspNetCoreApp.Web.Controllers
             return View(_mapper.Map<List<ProductViewModel>>(product));
         }
 
+        //[HttpGet("{page}/{pagesize}")]  //alttakiyle aynı şey sadece name belirtmiyoruz
+        [Route("[controller]/[action]/Pages/{page}/{pagesize}",Name ="productpage")]
         public IActionResult Pages(int page,int pageSize)
         {
 
@@ -36,6 +39,8 @@ namespace MyAspNetCoreApp.Web.Controllers
 
             return View(_mapper.Map<List<ProductViewModel>>(products));
         }
+
+        [Route("urunler/urun/{productid}",Name ="product")]  //controller ve action yazmak şart değil olmasa da olur ayrıca metod ismini de farklı verebiliyoruz
         public IActionResult GetById(int productid) //program.cs 'de route metodunda id kullanıldığı için id yazmamız gerekiyor
         {
             var products = _context.Product.Find(productid);
@@ -151,6 +156,8 @@ namespace MyAspNetCoreApp.Web.Controllers
             TempData["status"] = "Ürün başarıyla güncellendi.";
             return RedirectToAction("Index");
         }
+
+        //[HttpGet("{id}")] //genel route yapısı kullandığım için ?id şeklinde gözüküyordu ancak şimdi /id olarak gözükecek
         public IActionResult Remove(int id)
         {
             var product = _context.Product.Find(id);

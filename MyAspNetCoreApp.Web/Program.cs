@@ -37,17 +37,19 @@ app.UseAuthorization();
 //    pattern: "blog/{*article}",
 //    defaults: new {controller="Blog",action="Article"}); // bu sayede blog/article default olur.
 
-app.MapControllerRoute(
-    name: "article",
-    pattern: "{controller=Blog}/{action=Article}/{name}/{id}");
+//app.MapControllerRoute(
+//    name: "article",
+//    pattern: "{controller=blog}/{action=article}/{name}/{id}");
 
-app.MapControllerRoute(
-    name: "pages",
-    pattern: "{controller}/{action}/{page}/{pagesize}");  //ayrý  bir route verme
+//app.MapControllerRoute(
+//    name: "pages",
+//    pattern: "{controller}/{action}/{page}/{pagesize}");  //ayrý  bir route verme
 
-app.MapControllerRoute(
-    name: "getbyid",
-    pattern: "{controller}/{action}/{productid}");  //ayrý  bir route verme
+//app.MapControllerRoute(
+//    name: "getbyid",
+//    pattern: "{controller}/{action}/{productid}");  //ayrý  bir route verme
+
+/*app.MapControllers();*/ //controllerlarý mapleme görevi görmesi için kullanýldý
 
 app.MapControllerRoute(
     name: "default",

@@ -18,7 +18,10 @@ namespace MyAspNetCoreApp.Web.Controllers
             _context = context;
             _mapper = mapper;
         }
-
+        // Ancak bu route'lardan sonra diğer sayfalara gidemem o yüzden home controllerın üstünde default vir ontroller tanımlamam gerekir
+        [Route("")]  //üçü de aynı sonucu verir. Boş bırakılınca bu metot çalışsın demek
+        [Route("Home")]
+        [Route("Home/Index")]
         public IActionResult Index()
         {
             ProductListPartialViewModelMethod();
