@@ -20,6 +20,8 @@ namespace MyAspNetCoreApp.Web.Controllers
             _context = context;
             _mapper = mapper;
         }
+
+        [CacheResourceFilter]  //ilk istek yapıldığında bu metod çalışacak. Yalnız response üretilirken cache'i doldurduğumuz için 2. kez yapıldığında artık data cache'den dönenecek
         public IActionResult Index()
         {
             var product = _context.Product.ToList();
