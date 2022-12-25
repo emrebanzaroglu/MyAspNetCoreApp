@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using MyAspNetCoreApp.Web.ViewModels;
@@ -40,7 +41,9 @@ namespace MyAspNetCoreApp.Web.Controllers
             return View(_mapper.Map<List<ProductViewModel>>(products));
         }
 
+
         [Route("urunler/urun/{productid}",Name ="product")]  //controller ve action yazmak şart değil olmasa da olur ayrıca metod ismini de farklı verebiliyoruz
+        [ServiceFilter(typeof(NotFoundFilter))]  // NotFoundFilter ctor'da parametre aldığı için servicefilter olarak eklenir. Servicefilter eklendiği zaman DI container'a bu filter eklenmeli.
         public IActionResult GetById(int productid) //program.cs 'de route metodunda id kullanıldığı için id yazmamız gerekiyor
         {
             var products = _context.Product.Find(productid);
@@ -110,9 +113,12 @@ namespace MyAspNetCoreApp.Web.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(NotFoundFilter))]
         public IActionResult Update(int id)
         {
             var product = _context.Product.Find(id);
+
+
             ViewBag.ExpireValue = product.Expire;
             ViewBag.Expire = new Dictionary<string, int>()
             {
@@ -158,9 +164,11 @@ namespace MyAspNetCoreApp.Web.Controllers
         }
 
         //[HttpGet("{id}")] //genel route yapısı kullandığım için ?id şeklinde gözüküyordu ancak şimdi /id olarak gözükecek
+        [ServiceFilter(typeof(NotFoundFilter))]
         public IActionResult Remove(int id)
         {
             var product = _context.Product.Find(id);
+
             _context.Product.Remove(product);
             _context.SaveChanges();
             return RedirectToAction("Index");

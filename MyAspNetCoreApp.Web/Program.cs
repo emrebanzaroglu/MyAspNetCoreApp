@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using System.Reflection;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddScoped<IHelper, Helper>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<NotFoundFilter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
