@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyAspNetCoreApp.Web.Filters;
+using MyAspNetCoreApp.Web.Models;
 
 namespace   MyAspNetCoreApp.Web.Controllers
 {
@@ -13,7 +14,6 @@ namespace   MyAspNetCoreApp.Web.Controllers
             ViewData["names"] = new List<string>() { "ahmet", "mehmet", "hasan" };
             ViewBag.person = new { Id = 1, Name = "Emre", Age = 25 };
             TempData["surname"] = "banzar"; //başka viewlere veri taşıyabilir.
-
             return View();
         }
         public IActionResult Index2()
@@ -39,7 +39,8 @@ namespace   MyAspNetCoreApp.Web.Controllers
         }
         public IActionResult JsonResult() //Ajax modelinde veri döndürmek istediğimizde
         {
-            return Json(new { Id = 1, name = "Kalem", price = 100 });
+            return Json(new { Id = 1, name = "Kalem", price = 100 }
+            );
         }
         public IActionResult EmptyResult() //boş döndürmek istediğimizde
         {

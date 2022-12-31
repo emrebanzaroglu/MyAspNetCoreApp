@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAspNetCoreApp.Web", "MyAspNetCoreApp.Web\MyAspNetCoreApp.Web.csproj", "{19FEAD6A-FD96-4082-96DB-3D5E78243ABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAspNetCoreApp.Web", "MyAspNetCoreApp.Web\MyAspNetCoreApp.Web.csproj", "{19FEAD6A-FD96-4082-96DB-3D5E78243ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiddlewareExample.Web", "MiddlewareExample.Web\MiddlewareExample.Web.csproj", "{D599A1F2-2DD7-404B-86BA-A9F209D3D9FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{19FEAD6A-FD96-4082-96DB-3D5E78243ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19FEAD6A-FD96-4082-96DB-3D5E78243ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19FEAD6A-FD96-4082-96DB-3D5E78243ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D599A1F2-2DD7-404B-86BA-A9F209D3D9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D599A1F2-2DD7-404B-86BA-A9F209D3D9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D599A1F2-2DD7-404B-86BA-A9F209D3D9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D599A1F2-2DD7-404B-86BA-A9F209D3D9FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
