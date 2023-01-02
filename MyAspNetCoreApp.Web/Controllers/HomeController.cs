@@ -34,7 +34,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         [CustomExceptionFilter]
         public IActionResult Privacy()
         {
-            throw new Exception("Veritabanı ile ilgili bir hata meydana geldi.");
+            //throw new Exception("Veritabanı ile ilgili bir hata meydana geldi.");
             ProductListPartialViewModelMethod();
             return View();
         }

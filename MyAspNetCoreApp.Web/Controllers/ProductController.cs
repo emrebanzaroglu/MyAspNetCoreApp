@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.FileProviders;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -14,14 +15,16 @@ namespace MyAspNetCoreApp.Web.Controllers
         private AppDbContext _context;
         private readonly ProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public ProductController(AppDbContext context, IMapper mapper)
+        private readonly IFileProvider _fileProvider;
+        public ProductController(AppDbContext context, IMapper mapper, IFileProvider fileProvider)
         {
             _productRepository = new ProductRepository();
             _context = context;
             _mapper = mapper;
+            _fileProvider = fileProvider;
         }
 
-        [CacheResourceFilter]  //ilk istek yapıldığında bu metod çalışacak. Yalnız response üretilirken cache'i doldurduğumuz için 2. kez yapıldığında artık data cache'den dönenecek
+        /*[CacheResourceFilter] */ //ilk istek yapıldığında bu metod çalışacak. Yalnız response üretilirken cache'i doldurduğumuz için 2. kez yapıldığında artık data cache'den dönecek
         public IActionResult Index()
         {
             var product = _context.Product.ToList();
@@ -79,6 +82,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             //    ModelState.AddModelError(string.Empty, "Ürün ismi A , a harfi ile başlayamaz."); //string.Empty diyince sayfanın başına koyar hata mesajını. Eğer textbox'ın altına koymak istersen ilgili textbox'ın adını yazmak gerekir.
             //}
 
+
             ViewBag.Expire = new Dictionary<string, int>()
             {
                 {"1 Ay",1 },
@@ -97,7 +101,22 @@ namespace MyAspNetCoreApp.Web.Controllers
             {
                 try
                 {
-                    _context.Product.Add(_mapper.Map<Product>(newProduct)); //ProductViewModel'i Product'a mapleyecek
+                    var product = _mapper.Map<Product>(newProduct);  // ProductViewModel'i Product'a mapleyecek
+
+                    if (newProduct.Image!=null && newProduct.Image.Length>0)  //eğer resim eklenirse böyle kaydedecek yoksa no-image gelecek
+                    {
+                        //var root = _fileProvider.GetDirectoryContents(""); // içi boş çift tırnak("") koyunca projenin root klasörünü (MyAspNetCoreApp.Web) verir.
+                        var root = _fileProvider.GetDirectoryContents("wwwroot"); // wwwroot klasörüne gider.
+                        var images = root.First(x => x.Name == "images"); //wwwroot içindeki images klasörüne gider.
+                        var randomImageName = Guid.NewGuid() + Path.GetExtension(newProduct.Image.FileName);  //GetExtension verilmiş dosyann direkt uzantısını alır (.jpeg .pdf vs)
+                        var path = Path.Combine(images.PhysicalPath, randomImageName); // Combine metodu içindeki virgüllerle verilmiş olan Pathleri birleştiriyor.
+                        using var stream = new FileStream(path, FileMode.Create); //resmi kaydetmek için stream oluşturmamız gerekiyor. Paranteiz içi şı anlama geliyor: resmi bu path'e kaydet. Eğer bu path'de bu dosya yoksa oluştur.
+                        newProduct.Image.CopyTo(stream); //buraya kopyalanacak ve kaydedilecek
+                        product.ImagePath = randomImageName; // ImagePath'e dosya yolunu veriyoruz
+                    }
+                    
+
+                    _context.Product.Add(product); 
                     _context.SaveChanges();
                     TempData["status"] = "Ürün başarıyla eklendi.";
                     return RedirectToAction("Index");
@@ -135,11 +154,11 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new(){Data="Yeşil",Value="Yeşil"},
                 new(){Data="Sarı",Value="Sarı"}
             }, "Value", "Data", product.Color); //önce value sonra kullanıcının göreceği kısım ve seçili olanı göstereceği kısım
-            return View(_mapper.Map<ProductViewModel>(product));
+            return View(_mapper.Map<ProductUpdateViewModel>(product));
         }
 
         [HttpPost]
-        public IActionResult Update(ProductViewModel updateProduct)
+        public IActionResult Update(ProductUpdateViewModel updateProduct)
         {
             if (!ModelState.IsValid)
             {
@@ -159,11 +178,26 @@ namespace MyAspNetCoreApp.Web.Controllers
             }, "Value", "Data", updateProduct.Color);
                 return View();
             }
+
+            if (updateProduct.Image != null && updateProduct.Image.Length > 0)
+            {
+                var root = _fileProvider.GetDirectoryContents("wwwroot");
+                var images = root.First(x => x.Name == "images");
+                var randomImageName = Guid.NewGuid() + Path.GetExtension(updateProduct.Image.FileName);
+                var path = Path.Combine(images.PhysicalPath, randomImageName);
+                using var stream = new FileStream(path, FileMode.Create);
+                updateProduct.Image.CopyTo(stream);
+                updateProduct.ImagePath = randomImageName;
+            }
+
+
             _context.Product.Update(_mapper.Map<Product>(updateProduct)); //ProductViewModel'i Product'a dönüştürdük.
             _context.SaveChanges();
             TempData["status"] = "Ürün başarıyla güncellendi.";
             return RedirectToAction("Index");
         }
+
+
 
         //[HttpGet("{id}")] //genel route yapısı kullandığım için ?id şeklinde gözüküyordu ancak şimdi /id olarak gözükecek
         [ServiceFilter(typeof(NotFoundFilter))]

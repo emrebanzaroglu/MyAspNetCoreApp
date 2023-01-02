@@ -6,7 +6,8 @@
 <h1>Ürün Ekleme</h1>
 <div asp-validation-summary="ModelOnly">
 </div>
-<form asp-controller="Product" asp-action="Add" method="post">
+<form asp-controller="Product" asp-action="Add" method="post" enctype="multipart/form-data">
+    @*resim göndereceğimiz zaman enctype="multipart/form-data" keyini mutlaka vermeliyiz*@
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Ürün İsmi :</label>
         <input class="form-control" asp-for="Name">
@@ -56,6 +57,10 @@
         <label asp-for="PublishDate" class="form-label">Ürün Yayınlanma Tarihi :</label>
         <input class="form-control" asp-for="PublishDate">
         <span class="text-danger" asp-validation-for="PublishDate"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Ürün Resim</label>
+        <input class="form-control form-control-lg" asp-for="Image" type="file">
     </div>
     <button type="submit" class="btn btn-primary">Ekle</button>
 </form>

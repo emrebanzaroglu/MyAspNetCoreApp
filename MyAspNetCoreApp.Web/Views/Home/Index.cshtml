@@ -3,7 +3,8 @@
     var product = new Product() { Id = 1, Name = "Kalem", Price = 100, Stock = 200 };
 }
 
-<div class="row">
+<div class="container-fluid">
+    <div class="row">
     <div class="col-md-4">
         <partial name="~/PartialViews/_ProductListPartialView.cshtml" model="ViewBag.productListPartialViewModel" />
     </div>
@@ -19,6 +20,7 @@
         <italic>Asp.Net Core</italic>
         <product-show product="@product"></product-show>
     </div>
+</div>
 </div>
 
 <img src="images/car.jpg" />

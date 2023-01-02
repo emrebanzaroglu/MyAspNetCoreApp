@@ -11,5 +11,6 @@
         public DateTime? PublishDate { get; set; } //önceden eklediğimiz veriler olduğu için null özelliğini açtık
         public bool isPublish { get; set; } //yayınlansın mı yayınlanmasın mı
         public int Expire { get; set; }
+        public string? ImagePath { get; set; }
     }
 }
