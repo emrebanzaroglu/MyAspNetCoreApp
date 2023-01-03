@@ -12,5 +12,7 @@
         public bool isPublish { get; set; } //yayınlansın mı yayınlanmasın mı
         public int Expire { get; set; }
         public string? ImagePath { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

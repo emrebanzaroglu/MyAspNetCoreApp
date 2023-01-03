@@ -7,6 +7,7 @@ namespace MyAspNetCoreApp.Web.ViewModels
     public class ProductUpdateViewModel
     {
         public int Id { get; set; }
+        public int CategoryId { get; set; }
 
         [Required(ErrorMessage = "Lütfen bu alanı doldurunuz!")]
         [StringLength(50, ErrorMessage = "İsim alanına en fazla 50 karakter girilebilir!")]

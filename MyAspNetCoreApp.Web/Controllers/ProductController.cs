@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
@@ -27,8 +28,21 @@ namespace MyAspNetCoreApp.Web.Controllers
         /*[CacheResourceFilter] */ //ilk istek yapıldığında bu metod çalışacak. Yalnız response üretilirken cache'i doldurduğumuz için 2. kez yapıldığında artık data cache'den dönecek
         public IActionResult Index()
         {
-            var product = _context.Product.ToList();
-            return View(_mapper.Map<List<ProductViewModel>>(product));
+            List<ProductViewModel> products = _context.Product.Include(x => x.Category).Select(x => new ProductViewModel()
+            {
+                Id=x.Id,
+                Name=x.Name,
+                Price=x.Price,
+                Stock=x.Stock,
+                CategoryName=x.Category.Name,
+                Color=x.Color,
+                Description=x.Description,
+                Expire=x.Expire,
+                ImagePath=x.ImagePath,
+                isPublish=x.isPublish,
+                PublishDate=x.PublishDate
+            }).ToList();
+            return View(products);
         }
 
         //[HttpGet("{page}/{pagesize}")]  //alttakiyle aynı şey sadece name belirtmiyoruz
@@ -71,31 +85,25 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new(){Data="Yeşil",Value="Yeşil"},
                 new(){Data="Sarı",Value="Sarı"}
             }, "Value", "Data"); //önce value sonra kullanıcının göreceği kısım
+
+            var categories = _context.Category.ToList();
+            ViewBag.categorySelect = new SelectList(categories, "Id", "Name");  //Id kategorilerin arka planda tutulan kısmı, Name ise dropdownlistte gösterilen kısmı
             return View();
         }
 
         [HttpPost]
         public IActionResult Add(ProductViewModel newProduct)
         {
+
+            var categories = _context.Category.ToList();
+            ViewBag.categorySelect = new SelectList(categories, "Id", "Name");
+
             //if (!string.IsNullOrEmpty(newProduct.Name) && (newProduct.Name.StartsWith("A") || newProduct.Name.StartsWith("a")))  //A harfi ile başlıyorsa
             //{
             //    ModelState.AddModelError(string.Empty, "Ürün ismi A , a harfi ile başlayamaz."); //string.Empty diyince sayfanın başına koyar hata mesajını. Eğer textbox'ın altına koymak istersen ilgili textbox'ın adını yazmak gerekir.
             //}
 
-
-            ViewBag.Expire = new Dictionary<string, int>()
-            {
-                {"1 Ay",1 },
-                {"3 Ay",3 },
-                {"6 Ay",6 },
-                {"12 Ay",12 }
-            };
-            ViewBag.ColorSelect = new SelectList(new List<ColorSelectList>() {
-                new(){Data="Mavi",Value="Mavi"},
-                new(){Data="Kırmızı",Value="Kırmızı"},
-                new(){Data="Yeşil",Value="Yeşil"},
-                new(){Data="Sarı",Value="Sarı"}
-            }, "Value", "Data"); //önce value sonra kullanıcının göreceği kısım
+            IActionResult result = null;
 
             if (ModelState.IsValid)
             {
@@ -124,14 +132,31 @@ namespace MyAspNetCoreApp.Web.Controllers
                 catch (Exception)
                 {
                     ModelState.AddModelError(string.Empty, "Ürün kaydedilirken bir hata meydana geldi. Lütfen daha sonra tekrar deneyiniz.");
-                    return View();
+                    result = View();
                 }
             }
             else
             {
-                return View();
+                result =  View();
             }
+
+
+            ViewBag.Expire = new Dictionary<string, int>()
+            {
+                {"1 Ay",1 },
+                {"3 Ay",3 },
+                {"6 Ay",6 },
+                {"12 Ay",12 }
+            };
+            ViewBag.ColorSelect = new SelectList(new List<ColorSelectList>() {
+                new(){Data="Mavi",Value="Mavi"},
+                new(){Data="Kırmızı",Value="Kırmızı"},
+                new(){Data="Yeşil",Value="Yeşil"},
+                new(){Data="Sarı",Value="Sarı"}
+            }, "Value", "Data"); //önce value sonra kullanıcının göreceği kısım
+            return result;
         }
+
 
         [HttpGet]
         [ServiceFilter(typeof(NotFoundFilter))]
@@ -154,6 +179,10 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new(){Data="Yeşil",Value="Yeşil"},
                 new(){Data="Sarı",Value="Sarı"}
             }, "Value", "Data", product.Color); //önce value sonra kullanıcının göreceği kısım ve seçili olanı göstereceği kısım
+
+            var categories = _context.Category.ToList();
+            ViewBag.categorySelect = new SelectList(categories, "Id", "Name",product.CategoryId); //categoryId ekleme nedeni update ekranında önceden seçilmiş olan kategoriyi göstermek
+
             return View(_mapper.Map<ProductUpdateViewModel>(product));
         }
 
@@ -176,6 +205,10 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new(){Data="Yeşil",Value="Yeşil"},
                 new(){Data="Sarı",Value="Sarı"}
             }, "Value", "Data", updateProduct.Color);
+
+                var categories = _context.Category.ToList();
+                ViewBag.categorySelect = new SelectList(categories, "Id", "Name",updateProduct.CategoryId);
+
                 return View();
             }
 
