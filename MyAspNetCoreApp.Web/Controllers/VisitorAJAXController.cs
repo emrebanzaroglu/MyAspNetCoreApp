@@ -12,7 +12,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         private readonly AppDbContext _context;
 
         public VisitorAJAXController(AppDbContext context, IMapper mapper)
-        {as
+        {
             _context = context;
             _mapper = mapper;
         }
